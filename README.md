@@ -17,6 +17,25 @@
 - **Combined operations** — one command navigates, captures, and suggests next steps
 - **Contextual suggestions** — every response includes actionable next-step hints
 
+## Benchmarks
+
+Agent ergonomics is measurable.
+The [axi benchmark](https://axi.md) runs the same 14 real-world browsing tasks (Wikipedia research, GitHub navigation, multi-site comparison, and more) through 7 browser automation setups - 5 repeats each, with `claude-sonnet-4-6` as the agent and an LLM judge scoring task success.
+
+chrome-devtools-axi posts the lowest input tokens, cost, duration, and turn count of all 7 conditions, with 100% task success:
+
+| Condition                            | Avg Input Tokens | Avg Cost/Task | Avg Duration | Avg Turns | Success  |
+| ------------------------------------ | ---------------- | ------------- | ------------ | --------- | -------- |
+| **chrome-devtools-axi**              | **79,141**       | **$0.074**    | **21.5s**    | **4.5**   | **100%** |
+| dev-browser                          | 82,532           | $0.078        | 28.6s        | 4.9       | 99%      |
+| agent-browser (Vercel)               | 93,074           | $0.088        | 24.6s        | 4.8       | 99%      |
+| chrome-devtools-mcp + compressor CLI | 130,779          | $0.091        | 29.7s        | 7.6       | 100%     |
+| chrome-devtools-mcp + ToolSearch     | 133,712          | $0.096        | 29.4s        | 7.5       | 99%      |
+| chrome-devtools-mcp (raw MCP)        | 184,711          | $0.101        | 26.0s        | 6.2       | 99%      |
+| chrome-devtools-mcp code execution   | 129,606          | $0.120        | 36.2s        | 6.4       | 100%     |
+
+Against raw chrome-devtools-mcp - the very server this CLI wraps - that is 57% fewer input tokens, 26% lower cost, and 27% fewer agent turns.
+
 ## Quick Start
 
 Install the chrome-devtools-axi skill in the [Agent Skills](https://agentskills.io) format with [`npx skills`](https://github.com/vercel-labs/skills):
